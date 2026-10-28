@@ -1,0 +1,37 @@
+[
+  {
+    "lei": "549300HVTWB0GJZ16V92",
+    "label": "JD.com 京东集团",
+    "sector": "E-commerce"
+  },
+  {
+    "lei": "655600LWTFVMV3E2A890",
+    "label": "JD Logistics 京东物流",
+    "sector": "Logistics"
+  },
+  {
+    "lei": "254900OM3MAXYK8PCC84",
+    "label": "JD Health 京东健康",
+    "sector": "Healthcare"
+  },
+  {
+    "lei": "5493001KQW6DM7KEDR62",
+    "label": "China Construction Bank 建设银行",
+    "sector": "Banking"
+  },
+  {
+    "lei": "HWUPKR0MPOU8FGXBT394",
+    "label": "Apple 苹果",
+    "sector": "Technology"
+  },
+  {
+    "lei": "5493001NTNQJDH60PM02",
+    "label": "Alibaba 阿里巴巴",
+    "sector": "E-commerce"
+  },
+  {
+    "lei": "213800PE1KEFCNFR1R50",
+    "label": "Burberry 博柏利",
+    "sector": "Consumer brands"
+  }
+]

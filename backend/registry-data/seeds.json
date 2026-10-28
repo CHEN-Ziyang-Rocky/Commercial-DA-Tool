@@ -1,0 +1,77 @@
+[
+  {
+    "lei": "MLU0ZO3ML4LN2LL2TL39",
+    "label": "HSBC 汇丰",
+    "sector": "Banking"
+  },
+  {
+    "lei": "5493007O3QFXCPOGWK22",
+    "label": "OCBC 华侨银行",
+    "sector": "Banking"
+  },
+  {
+    "lei": "549300UKYQ6UFK6ZV089",
+    "label": "China Everbright Bank 光大银行",
+    "sector": "Banking"
+  },
+  {
+    "lei": "5493007FKT78NKPM5V55",
+    "label": "DBS 星展",
+    "sector": "Banking"
+  },
+  {
+    "lei": "ZP5ILWVSYE4LJGMMVD57",
+    "label": "AIA 友邦",
+    "sector": "Insurance"
+  },
+  {
+    "lei": "213800YTVSXYQN17BW16",
+    "label": "HKEX 香港交易所",
+    "sector": "Market infrastructure"
+  },
+  {
+    "lei": "549300KZOZHII0DGF611",
+    "label": "Swire Pacific 太古股份",
+    "sector": "Diversified group"
+  },
+  {
+    "lei": "213800TWMS92BSR6XO37",
+    "label": "CLP 中电",
+    "sector": "Utilities"
+  },
+  {
+    "lei": "549300HVTWB0GJZ16V92",
+    "label": "JD.com 京东集团",
+    "sector": "E-commerce"
+  },
+  {
+    "lei": "655600LWTFVMV3E2A890",
+    "label": "JD Logistics 京东物流",
+    "sector": "Logistics"
+  },
+  {
+    "lei": "254900OM3MAXYK8PCC84",
+    "label": "JD Health 京东健康",
+    "sector": "Healthcare"
+  },
+  {
+    "lei": "5493001KQW6DM7KEDR62",
+    "label": "China Construction Bank 建设银行",
+    "sector": "Banking"
+  },
+  {
+    "lei": "HWUPKR0MPOU8FGXBT394",
+    "label": "Apple 苹果",
+    "sector": "Technology"
+  },
+  {
+    "lei": "5493001NTNQJDH60PM02",
+    "label": "Alibaba 阿里巴巴",
+    "sector": "E-commerce"
+  },
+  {
+    "lei": "213800PE1KEFCNFR1R50",
+    "label": "Burberry 博柏利",
+    "sector": "Consumer brands"
+  }
+]

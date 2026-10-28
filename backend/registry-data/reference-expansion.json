@@ -1,0 +1,24 @@
+{
+  "cohorts": [
+    {
+      "country": "US",
+      "maxPages": 1,
+      "pageSize": 50
+    },
+    {
+      "country": "GB",
+      "maxPages": 1,
+      "pageSize": 50
+    },
+    {
+      "country": "SG",
+      "maxPages": 1,
+      "pageSize": 50
+    },
+    {
+      "country": "CN",
+      "maxPages": 1,
+      "pageSize": 50
+    }
+  ]
+}
