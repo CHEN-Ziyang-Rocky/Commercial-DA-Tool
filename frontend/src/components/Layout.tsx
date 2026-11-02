@@ -17,8 +17,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           flexGrow: 1,
           minWidth: 0,
           p: { xs: 2, md: 3 },
-          pt: { xs: 7, md: 3 },
-          minHeight: "100vh",
+          pt: { xs: 2, md: 3 },
+          minHeight: "calc(100vh - 48px)",
           ml: { md: `${drawerWidth}px` },
         }}
       >

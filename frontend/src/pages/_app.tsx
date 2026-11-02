@@ -9,6 +9,7 @@ import theme from "../theme";
 import { AuthProvider } from "../contexts/AuthContext";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Layout from "../components/Layout";
+import ProjectLinks from "../components/ProjectLinks";
 import { useRouter } from "next/router";
 
 const clientSideEmotionCache = createEmotionCache();
@@ -29,6 +30,7 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AuthProvider>
+          <ProjectLinks publicPage={isAuthPage} />
           <ProtectedRoute>
             {isAuthPage ? (
               // 登录 / 注册页：不用 Layout
