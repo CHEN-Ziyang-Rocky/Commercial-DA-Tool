@@ -77,4 +77,4 @@ This repository contains application source and environment templates. Secrets, 
 
 ## One-click portfolio demo (2026-11-02)
 
-The guest demo update is being released. The application entry is `/demo`; no shared credentials are required. Normal login remains available. See [demo setup, limits, tests and rollout](docs/ONE-CLICK-DEMO.md).
+The guest demo is deployed at https://analytics.imrocky.com/demo. The application entry is `/demo`; no shared credentials are required. Normal login remains available. See [demo setup, limits, tests and rollout](docs/ONE-CLICK-DEMO.md).
