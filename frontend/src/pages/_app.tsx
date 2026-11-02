@@ -1,7 +1,7 @@
 // pages/_app.tsx
 import * as React from "react";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider, Typography } from "@mui/material";
 import { AppProps } from "next/app";
 import createEmotionCache from "../lib/createEmotionCache";
 import theme from "../theme";
@@ -30,11 +30,16 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AuthProvider>
-          <ProjectLinks publicPage={isAuthPage} />
           <ProtectedRoute>
             {isAuthPage ? (
               // 登录 / 注册页：不用 Layout
-              <Component {...pageProps} />
+              <>
+                <Box component="header" sx={{ position: "sticky", top: 0, zIndex: "appBar", bgcolor: "background.paper", borderBottom: 1, borderColor: "divider", minHeight: 64, px: { xs: 2, md: 3 }, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1 }}>
+                  <Typography component="a" href="/demo" sx={{ color: "text.primary", textDecoration: "none", fontWeight: 700, fontSize: { xs: 13, sm: 16 } }}>Commercial DA</Typography>
+                  <ProjectLinks />
+                </Box>
+                <Component {...pageProps} />
+              </>
             ) : (
               // 其他受保护页：套上原有 Layout（含导航栏）
               <Layout>

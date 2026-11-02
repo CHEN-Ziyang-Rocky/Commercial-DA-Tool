@@ -29,7 +29,7 @@ export default function Login() {
   };
   return (
     <Box
-      minHeight="calc(100vh - 48px)"
+      minHeight="calc(100vh - 64px)"
       display="flex"
       alignItems="center"
       justifyContent="center"

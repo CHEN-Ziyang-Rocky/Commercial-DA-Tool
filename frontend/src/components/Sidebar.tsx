@@ -24,7 +24,7 @@ export default function Sidebar() {
         <IconButton
           aria-label="Open navigation"
           onClick={() => setOpen(true)}
-          sx={{ position: "fixed", top: 8, left: 8, zIndex: 1200 }}
+          sx={{ position: "fixed", top: 12, left: 8, zIndex: 1200 }}
         >
           <Menu />
         </IconButton>
