@@ -9,7 +9,7 @@ export default function ProtectedRoute({
 }) {
   const { user, loading, error, retry, logout } = useAuth();
   const router = useRouter();
-  const isPublic = router.pathname === "/auth/login";
+  const isPublic = ["/auth/login", "/demo"].includes(router.pathname);
   useEffect(() => {
     if (router.isReady && !loading && !error && !user && !isPublic)
       void router.replace({

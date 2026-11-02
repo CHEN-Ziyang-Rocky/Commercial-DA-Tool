@@ -1,3 +1,4 @@
+import { demoToken, exitDemo } from "@/lib/demo";
 import {
   createContext,
   useCallback,
@@ -13,7 +14,7 @@ interface Identity {
   sub: string;
   email: string;
   fullName: string;
-  role: "user" | "admin";
+  role: "user" | "admin" | "demo";
 }
 interface Auth {
   user: Identity | null;
@@ -44,6 +45,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const restore = async () => {
       setLoading(true);
       setError("");
+      if (demoToken()) {
+        try { setUser((await api.get<Identity>("/auth/me")).data); } catch { setError("Demo unavailable. Return to /demo to retry."); }
+        setLoading(false); return;
+      }
       if (!token) {
         setLoading(false);
         return;
@@ -73,6 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     void restore();
     // Expiry is also checked while a page remains open, before the next request.
     const timer = window.setInterval(() => {
+      if (demoToken()) return;
       const current = localStorage.getItem("access_token");
       if (current) {
         try {
@@ -106,6 +112,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
   const logout = () => {
+    if (demoToken()) { void exitDemo().catch(() => setError("Exit failed. Retry to revoke the demo credential.")); return; }
     clearSession();
     void router.replace("/auth/login");
   };

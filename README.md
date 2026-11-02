@@ -74,3 +74,7 @@ Database integration tests require an explicitly enabled, dedicated `test_` data
 GLEIF accounting consolidation relationships do not establish ownership percentages, credit ratings or customer relationships. An expired LEI registration does not imply bankruptcy. Collection is bounded and is not a complete company registry. Historical benchmark reports describe their own datasets and environments; they are not performance guarantees for this application.
 
 This repository contains application source and environment templates. Secrets, deployment credentials, private Git history, generated data, database backups, local runtime files and production infrastructure are excluded. Production infrastructure is managed separately.
+
+## One-click portfolio demo (2026-11-02)
+
+The guest demo update is being released. The application entry is `/demo`; no shared credentials are required. Normal login remains available. See [demo setup, limits, tests and rollout](docs/ONE-CLICK-DEMO.md).

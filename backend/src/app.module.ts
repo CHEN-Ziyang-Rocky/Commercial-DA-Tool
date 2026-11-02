@@ -1,3 +1,4 @@
+import { DemoModule } from './demo/demo.module';
 import { HealthController } from './common/health.controller';
 import { RegistryModule } from './modules/registry/registry.module';
 import { Module } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     ConfigModule.forRoot({ isGlobal: true, load: [appConfig] }),
     TypeOrmModule.forRoot(AppDataSource.options),
     RegistryModule,
+    DemoModule,
     UserModule,
     AuthModule,
   ],

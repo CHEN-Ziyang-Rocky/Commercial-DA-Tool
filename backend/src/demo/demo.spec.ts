@@ -1,0 +1,57 @@
+import { Test } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import request = require('supertest');
+import { randomBytes } from 'crypto';
+import { DemoModule } from './demo.module';
+import { DemoStore } from './demo-store';
+import { configureApp } from '../common/configure-app';
+import { RegistryWorkspace } from '../modules/registry/registry.service';
+describe('isolated demo HTTP boundary', () => {
+  let app: INestApplication;
+  beforeAll(async () => { app = (await Test.createTestingModule({imports:[DemoModule]}).compile()).createNestApplication(); configureApp(app); await app.init(); });
+  afterAll(async () => { await app.close(); });
+  const create = () => request(app.getHttpServer()).post('/demo-api/session').set('Idempotency-Key', randomBytes(32).toString('hex')).send({});
+  it('isolates reviews, preserves refresh, rejects stale edits, exit and expired credentials', async () => {
+    const a = (await create().expect(201)).body.token, b = (await create().expect(201)).body.token;
+    const auth = (t: string) => ({Authorization:`Bearer ${t}`});
+    const list = await request(app.getHttpServer()).get('/demo-api/registry').set(auth(a)).expect(200);
+    expect(list.body.total).toBeGreaterThan(0); const lei = list.body.items[0].lei;
+    const detail = (await request(app.getHttpServer()).get(`/demo-api/registry/${lei}`).set(auth(a))).body;
+    const dto = {evidenceVersion:detail.evidenceVersion, version:detail.review?.version??0,status:'in_progress',owner:'Demo A',dueDate:'2026-11-16',note:'Checked the published parent evidence.'};
+    await request(app.getHttpServer()).put(`/demo-api/registry/${lei}/review`).set(auth(a)).send(dto).expect(200);
+    await request(app.getHttpServer()).put(`/demo-api/registry/${lei}/review`).set(auth(a)).send(dto).expect(409);
+    expect((await request(app.getHttpServer()).get(`/demo-api/registry/${lei}`).set(auth(b))).body.review?.owner).not.toBe('Demo A');
+    expect((await request(app.getHttpServer()).get(`/demo-api/registry/${lei}`).set(auth(a))).body.review.owner).toBe('Demo A');
+    await request(app.getHttpServer()).get('/demo-api/user').set(auth(a)).expect(404);
+    await request(app.getHttpServer()).post('/demo-api/reset').set(auth(b)).send({}).expect(201);
+    expect((await request(app.getHttpServer()).get(`/demo-api/registry/${lei}`).set(auth(a))).body.review.owner).toBe('Demo A');
+    const bBeforeReset=(await request(app.getHttpServer()).get(`/demo-api/registry/${lei}`).set(auth(b))).body.review;
+    await request(app.getHttpServer()).post('/demo-api/reset').set(auth(a)).send({}).expect(201);
+    expect((await request(app.getHttpServer()).get(`/demo-api/registry/${lei}`).set(auth(a))).body.review?.owner).not.toBe('Demo A');
+    expect((await request(app.getHttpServer()).get(`/demo-api/registry/${lei}`).set(auth(b))).body.review).toEqual(bBeforeReset);
+    await request(app.getHttpServer()).post('/demo-api/exit').set(auth(a)).send({}).expect(201);
+    await request(app.getHttpServer()).get('/demo-api/auth/me').set(auth(a)).expect(401);
+    const store = app.get<DemoStore<RegistryWorkspace>>(DemoStore); const s = store.get(`Bearer ${b}`); s.touched = Date.now()-store.idle-1;
+    await request(app.getHttpServer()).get('/demo-api/auth/me').set(auth(b)).expect(401);
+  });
+  it('requires explicit JSON create and guards origins and idempotency', async () => {
+    const key = randomBytes(32).toString('hex');
+    const post = () => request(app.getHttpServer()).post('/demo-api/session').set('Idempotency-Key',key).send({});
+    expect((await post()).body.token).toBe((await post()).body.token);
+    await post().set('Origin','https://untrusted.invalid').expect(403);
+    await request(app.getHttpServer()).get('/demo-api/session').expect(404);
+    await request(app.getHttpServer()).post('/demo-api/session').send({}).expect(400);
+  });
+  it('rejects expiry before cleanup and limits resources', () => {
+    const store = new DemoStore(); const s=store.create('a'.repeat(64),'ip',()=>({}),1000);
+    expect(()=>store.get(`Bearer ${s.token}`,1000+store.maximum)).toThrow();
+    for(let i=0;i<store.createLimit;i++) store.create(i.toString(16).padStart(64,'0'),'limited',()=>({}),2000);
+    expect(()=>store.create('f'.repeat(64),'limited',()=>({}),2000)).toThrow();
+    store.cleanup(2000+store.maximum);
+    const replacement=store.create('a'.repeat(64),'ip',()=>({}),2000+store.maximum);
+    expect(replacement.token).not.toBe(s.token);
+    replacement.touched=replacement.created+store.maximum-1;
+    expect(()=>store.get(`Bearer ${replacement.token}`,replacement.created+store.maximum)).toThrow();
+    store.onModuleDestroy();
+  });
+});

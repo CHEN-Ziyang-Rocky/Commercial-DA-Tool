@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { RegistrySnapshot } from './registry.types';
 import { snapshotHash, validateSnapshot } from './validate-snapshot';
 const snapshot = JSON.parse(
   readFileSync(
-    resolve(__dirname, '../../../registry-data/gleif-snapshot.json'),
+    resolve(__dirname, existsSync(resolve(__dirname, '../../../registry-data/gleif-snapshot.json')) ? '../../../registry-data/gleif-snapshot.json' : '../../../demo-data/gleif-snapshot.json'),
     'utf8',
   ),
 ) as RegistrySnapshot;

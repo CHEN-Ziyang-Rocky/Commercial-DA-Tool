@@ -26,7 +26,8 @@
     "seed:demo-reviews": "ts-node -r tsconfig-paths/register src/scripts/seed-demo-reviews.ts",
     "seed:visitor": "ts-node -r tsconfig-paths/register src/scripts/seed-admin.ts --visitor",
     "db:retire-synthetic": "ts-node -r tsconfig-paths/register src/scripts/retire-synthetic.ts",
-    "registry:upgrade": "ts-node -r tsconfig-paths/register src/scripts/registry-upgrade.ts"
+    "registry:upgrade": "ts-node -r tsconfig-paths/register src/scripts/registry-upgrade.ts",
+    "demo:preview": "node dist/demo/preview.js"
   },
   "engines": {
     "npm": ">=10.0.0",

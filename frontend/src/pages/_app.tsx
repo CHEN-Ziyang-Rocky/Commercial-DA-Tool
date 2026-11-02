@@ -22,7 +22,7 @@ export default function MyApp(props: MyAppProps) {
   const router = useRouter();
 
   // 判断当前是否在 /auth/login 等公开路由
-  const isAuthPage = router.pathname.startsWith("/auth");
+  const isAuthPage = router.pathname.startsWith("/auth") || router.pathname === "/demo";
 
   return (
     <CacheProvider value={emotionCache}>

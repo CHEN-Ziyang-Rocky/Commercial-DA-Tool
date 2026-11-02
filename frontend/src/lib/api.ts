@@ -1,9 +1,12 @@
+import { demoToken } from "./demo";
 import axios from "axios";
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001",
   timeout: 10000,
 });
 api.interceptors.request.use((config) => {
+  const demo = demoToken();
+  if (demo) { config.url = `/demo-api${config.url}`; config.headers.Authorization = `Bearer ${demo}`; return config; }
   const token =
     typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -17,7 +20,8 @@ api.interceptors.response.use(
       error.response?.status === 401 &&
       error.config?.url !== "/auth/login"
     ) {
-      window.dispatchEvent(new Event("auth:expired"));
+      if (demoToken()) { sessionStorage.removeItem("portfolio_demo_token"); sessionStorage.removeItem("portfolio_demo_key"); window.location.assign("/demo"); }
+      else window.dispatchEvent(new Event("auth:expired"));
     }
     return Promise.reject(error);
   },

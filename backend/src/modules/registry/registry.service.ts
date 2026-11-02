@@ -158,6 +158,7 @@ export function ancestorsOf(lei: string, records: RegistryRecord[]) {
   }
   return { ancestors, stopReason };
 }
+export interface RegistryWorkspace { metadata: import("./registry.types").SnapshotMeta; records: RegistryRecord[]; reviews: RegistryReview[]; }
 @Injectable()
 export class RegistryService {
   constructor(private readonly db: DataSource) {}
@@ -245,12 +246,12 @@ export class RegistryService {
         : undefined,
     };
   }
-  async companyOptions() {
-    const { records, metadata } = await this.load();
+  async companyOptions(workspace?: RegistryWorkspace) {
+    const { records, metadata } = workspace ?? await this.load();
     return { total: records.length, items: companyOptions(records, metadata.seeds) };
   }
-  async changes() {
-    const { metadata, records, reviews } = await this.load();
+  async changes(workspace?: RegistryWorkspace) {
+    const { metadata, records, reviews } = workspace ?? await this.load();
     return {
       changes: metadata.changes ?? null,
       orphanedReviews: reviews
@@ -263,9 +264,9 @@ export class RegistryService {
         })),
     };
   }
-  async list(query: RegistryQueryDto) {
+  async list(query: RegistryQueryDto, workspace?: RegistryWorkspace) {
     const now = Date.now();
-    const { metadata, records, reviews } = await this.load();
+    const { metadata, records, reviews } = workspace ?? await this.load();
     const levels = relativeLevels(records, query.root);
     const matching = this.matching(records, reviews, query, now);
     const countryCounts = new Map<string, number>();
@@ -399,8 +400,8 @@ export class RegistryService {
       ),
     };
   }
-  async detail(lei: string) {
-    const { metadata, records, reviews } = await this.load();
+  async detail(lei: string, workspace?: RegistryWorkspace) {
+    const { metadata, records, reviews } = workspace ?? await this.load();
     const record = records.find((r) => r.lei === lei);
     if (!record) throw new NotFoundException('Entity not in this snapshot');
     const hierarchy = ancestorsOf(lei, records);
@@ -470,9 +471,9 @@ export class RegistryService {
       return state;
     });
   }
-  async export(query: RegistryQueryDto) {
+  async export(query: RegistryQueryDto, workspace?: RegistryWorkspace) {
     const now = Date.now();
-    const { metadata, records, reviews } = await this.load();
+    const { metadata, records, reviews } = workspace ?? await this.load();
     const levels = relativeLevels(records, query.root);
     const rows = this.matching(records, reviews, query, now).map((r) => [
       levels.get(r.lei) ?? '',

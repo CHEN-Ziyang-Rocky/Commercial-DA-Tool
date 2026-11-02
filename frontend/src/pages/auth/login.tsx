@@ -39,6 +39,8 @@ export default function Login() {
         <Stack component="form" spacing={3} onSubmit={submit}>
           <Typography variant="h5">Commercial DA</Typography>
           <Typography variant="h4">Sign in</Typography>
+          <Button variant="outlined" href="/demo">Try Demo</Button>
+          <Typography variant="body2">No registration required. Explore with sample data.</Typography>
           <TextField
             required
             label="Email"

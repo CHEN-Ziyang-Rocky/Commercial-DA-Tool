@@ -98,7 +98,7 @@ export default function ReviewPanel({
             {error} <Button onClick={reload}>Reload latest</Button>
           </Alert>
         )}
-        {user?.role === "admin" ? (
+        {["admin", "demo"].includes(user?.role ?? "") ? (
           <>
             <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
               <Autocomplete
